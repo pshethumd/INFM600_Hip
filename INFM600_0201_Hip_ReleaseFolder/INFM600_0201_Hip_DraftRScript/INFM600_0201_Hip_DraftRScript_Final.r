@@ -62,3 +62,7 @@
 > sd(dataset$RMF_IP_2011,na.rm=TRUE) #value= 2.656481
 > sd(dataset$RMF_IA_2005_2010,na.rm=TRUE) #value= 22.16973
 
+#--Further analysis of the reseach question has to be done by assigning weights to each variable and 
+#--inspecting its effect on the final reseach of the company's investment. Team HIP continues to work 
+#--on how to analyze further 
+
