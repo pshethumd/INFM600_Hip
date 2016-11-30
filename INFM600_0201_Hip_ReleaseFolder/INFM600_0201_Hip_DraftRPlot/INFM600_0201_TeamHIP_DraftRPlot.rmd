@@ -1,0 +1,124 @@
+---
+title: "Draft R Plot"
+output: html_notebook
+---
+Team HIP is analyzing the World Development Report 2014 dataset (World Development Report, 2016. Wdr2014-annex-tables.csv [Data set CSV File]. Retrieved from http://data.worldbank.org/data-catalog/world-development-report-2014. September 22nd, 2016.) that was compiled by the World Bank and contains of Risk Indicators of 133 major countries. The purpose of our analysis is to find out a potential investment destination for our Insurance Company. As explained in the previous submissions, we will be considering three questions each containing multiple indicators that help us find out the top ten countries from every aspect. 
+
+In this assignment we will plot each variable against the country and try to find out the top ten countries for each. We will be using the 'ggplot2' and 'xkcd' libraries to enhance our plots and further our understanding. We load the libraries using the commands given below.
+
+
+```{r}
+install.packages("ggplot2")
+install.packages("xkcd")
+library(ggplot2)
+library(xkcd)
+```
+
+The 'xkcd' special fonts are not present by default on Microsoft Windows machines and extra commands need to be added in order to display ggplot2 bar-graphs in 'xkcd' style. We use the commands as shown below to load the required font.
+
+```{r}
+font_import(pattern="[X/x]kcd", prompt=FALSE)
+loadfonts(device="win")
+```
+
+Now, we need to find the top ten countries for every variable and thus we need to subset each in descending order of numeric values. We create subsets for each dataset and then execute plot commands to visualize the top ten countries. 
+
+<b>Q1: Which are the favorable countries in order of their financial stability? 
+(Variables: KDI_PPPT_2012, KDI_GDP_2012, RME_IR_2010_2012)</b>
+
+The above process can be explained in detail for one variable and can be replicated for the others. We start with creating a subset of top ten countries for our first variable 'KDI_PPPT_2012' which indicate the Purchasing Power Parity. 
+
+```{r}
+d=read.csv(file.choose())
+KDIPPPT2012subset=head(d[order(-d$KDI_PPPT_2012),],10)
+```
+
+Post creating the subset and arranging the countries in descending order, we plot them using the ggplot command. The ggplot command takes the dataset and the aesthetics as inputs. We then append command geom_bar which takes the stat input for plotting it physically and the fill input to determine the color of the bars. To enable the xkcd theme we use theme_xkcd. Further we append, ggtitle, xlab and ylab for specifying the Plot title, x axis label and y axis label. For enhancing visual clarity, we flip the coordinates using the coord_flip function. The script is as mentioned below.
+
+```{r}
+p=ggplot(KDIPPPT2012subset,aes(x=Country,y=KDI_PPPT_2012))
+p+geom_bar(stat="identity",fill="red")+theme_xkcd()+ggtitle("Top 10 Countries: Purchasing Power Parity")+xlab("Country")+ylab("Purchasing Power Parity")+coord_flip()
+```
+The output of the above command is shown. It clearly shows the top 10 countries in order of their purchasing power parity. Similarly, we can repeat the process for the other variables and obtain similar plots that help us find out the top 10 countries for every aspect.
+
+We now repeat the process for KDI_GDP_2012 that give us an idea of GDP as a percent of growth per capita in the country. 
+
+```{r}
+KDIGDP2012subset=head(d[order(-d$KDI_GDP_2012),],10)
+p=ggplot(KDIGDP2012subset,aes(x=Country,y=KDI_GDP_2012))
+p+geom_bar(stat="identity",fill="red")+theme_xkcd()+ggtitle("Top 10 Countries: Gross Domestic Product")+xlab("Country")+ylab("Gross Domestic Product")+coord_flip()
+```
+
+Further, we repeat the process for RME_IR_2010_2012 that give us an idea of  holdings of monetary gold, special drawing rights, reserves of IMF members held by the IMF, and holdings of foreign exchange under the control of monetary authorities country which represents the stability of the country.
+
+```{r}
+RMEIR20102012subset=head(d[order(-d$RME_IR_2010_2012),],10)
+p=ggplot(RMEIR20102012subset,aes(x=Country,y=RME_IR_2010_2012))
+p+geom_bar(stat="identity",fill="red")+theme_xkcd()+ggtitle("Top 10 Countries: International Reserves")+xlab("Country")+ylab("International Reserves")+coord_flip()
+```
+
+We can now proceed to the next question.
+
+<b>Q2: Which are the favorite countries in order of good governance practice and availability of qualified human capital? 
+(Variables: RME_WWGI_2011, RMH_EP_2010, RMH_ES_2010, RMH_ET_2010)</b>
+
+RME_WWGI_2011 represents Worldwide Governance Indicator which showcases the ease the do business in the country. We use the same commands as above and list the top 10 countries in order of Worldwide Governance Indicator.
+
+```{r}
+RMEWWGI2011subset=head(d[order(-d$RME_WWGI_2011),],10)
+p=ggplot(RMEWWGI2011subset,aes(x=Country,y=RME_WWGI_2011))
+p+geom_bar(stat="identity",fill="blue")+theme_xkcd()+ggtitle("Top 10 Countries: Worldwide Governance Indicators")+xlab("Country")+ylab("Worldwide Governance Indicators")+coord_flip()
+```
+
+Further, RMH_EP_2010 gives us an idea about the percent of adults that are over and above the age 25 and have completed their primary education. This can be an estimate of the available skilled workforce. The script is as below.
+
+```{r}
+RMH_EP_2010subset=head(d[order(-d$RMH_EP_2010),],10)
+p=ggplot(RMH_EP_2010subset,aes(x=Country,y=RMH_EP_2010))
+p+geom_bar(stat="identity",fill="blue")+theme_xkcd()+ggtitle("Top 10 Countries: Primary Education")+xlab("Country")+ylab("Primary Education")+coord_flip()
+```
+
+Next we consider variable RMH_ES_2010 which indicates the percent of adults that are over and above the age 25 and have completed their secondary education which is an indicator for skilled workforce.
+
+```{r}
+RMH_ES_2010subset=head(d[order(-d$RMH_ES_2010),],10)
+p=ggplot(RMH_ES_2010subset,aes(x=Country,y=RMH_ES_2010))
+p+geom_bar(stat="identity",fill="blue")+theme_xkcd()+ggtitle("Top 10 Countries: Secondary Education")+xlab("Country")+ylab("Secondary Education")+coord_flip()
+```
+
+The final variable to answer this question is RMH_ET_2010 which is the percent of adults that are over and above the age 25 and have completed their tertiary education. Management staff of the company would typically be from this segment.
+
+```{r}
+RMH_ET_2010subset=head(d[order(-d$RMH_ET_2010),],10)
+p=ggplot(RMH_ET_2010subset,aes(x=Country,y=RMH_ET_2010))
+p+geom_bar(stat="identity",fill="blue")+theme_xkcd()+ggtitle("Top 10 Countries: Tertiary Education")+xlab("Country")+ylab("Tertiary Education")+coord_flip()
+```
+
+<b>Q3: Which are the favorable countries in order of potential market? 
+(Variables: RMH_S_2011, RMF_IP_2011, RMF_IA_2005_2010)</b>
+
+The first variable for our question is RMH_S_2011 which denotes the percentage of respondents (age 15+) who report saving or setting aside any money in the past 12 months. This gives us an idea of the potential market for our insurance company. The script to plot the bar graph is similar to above questions and is shown below.
+
+```{r}
+RMH_S_2011subset=head(d[order(-d$RMH_S_2011),],10)
+p=ggplot(RMH_S_2011subset,aes(x=Country,y=RMH_S_2011))
+p+geom_bar(stat="identity",fill="green")+theme_xkcd()+ggtitle("Top 10 Countries: % People who saved")+xlab("Country")+ylab("% People who saved")+coord_flip()
+```
+
+The next variable required to answer our question is RMF_IP_2011 which shows a ratio of insurance premiums (life and nonlife) to GDP
+
+```{r}
+RMF_IP_2011subset=head(d[order(-d$RMF_IP_2011),],10)
+p=ggplot(RMF_IP_2011subset,aes(x=Country,y=RMF_IP_2011))
+p+geom_bar(stat="identity",fill="green")+theme_xkcd()+ggtitle("Top 10 Countries: Insurance Premiums")+xlab("Country")+ylab("Insurance Premiums")+coord_flip()
+```
+
+The last variable to answer the above question is RMF_IA_2005_2010 which the ratio of assets of insurance companies to GDP between 2005 and 2010. People who are already invested and wish to invest can be found out using this.
+
+```{r}
+RMF_IA_2005_2010subset=head(d[order(-d$RMF_IA_2005_2010),],10)
+p=ggplot(RMF_IA_2005_2010subset,aes(x=Country,y=RMF_IA_2005_2010))
+p+geom_bar(stat="identity",fill="green")+theme_xkcd()+ggtitle("Top 10 Countries: Assets of Insurance")+xlab("Country")+ylab("Assets of Insurance")+coord_flip()
+```
+
+We can find out which country appears the maximum number of times to calculate the safe bet for our investment.
